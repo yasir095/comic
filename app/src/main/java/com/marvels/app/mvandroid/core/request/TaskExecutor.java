@@ -46,6 +46,9 @@ public class TaskExecutor
         }
 
         taskManager.execute(runnable);
+
+        //@todo: implements submit, cancel model here for TaskExecutor.
+        //taskManager.submit();
     }
 
     public TaskManager getTaskExecutor()
