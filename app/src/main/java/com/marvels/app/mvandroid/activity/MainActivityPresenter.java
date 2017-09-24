@@ -51,19 +51,24 @@ public class MainActivityPresenter extends BasePresenter {
 
     @Override
     public void onCompleteResult(ResultSet resultSet) {
-
-        viewDelegate.updateListAdapter();
+        viewDelegate.updateListAdapter((ComicResultSet) resultSet);
     }
 
     @Override
     public void onFailResult(ResultSet resultSet, int statusCode) {
-
+        viewDelegate.showErrorDialog();
     }
 
     public interface View
     {
         void showErrorDialog();
-        void updateListAdapter();
+
+        /**
+         * this function should be perform on UI thread
+         * call RunOnUIThread({})
+         * @param resultSet
+         */
+        void updateListAdapter(ComicResultSet resultSet);
         void showActionBar();
         void hideActionBar();
     }

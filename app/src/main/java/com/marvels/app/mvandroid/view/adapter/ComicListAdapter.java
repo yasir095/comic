@@ -20,21 +20,29 @@ import java.util.ArrayList;
  * details page should display title, description, page count, price and authors of the comic
  */
 
-public class ComicListAdapter extends ListAdapter<Comic>
+public class ComicListAdapter extends ListAdapterImp<Comic>
 {
-    private ArrayList<Comic> arrayListComic;
     private Activity context;
     private ViewHolder viewHolder;
 
-    public ComicListAdapter(ArrayList<Comic> arrayList, Activity context) {
-        super(arrayList);
-        this.arrayListComic = arrayList;
+    public ComicListAdapter(Activity context) {
         this.context = context;
+        this.arrayList = new ArrayList<>();
+    }
+
+    @Override
+    public void setData(ArrayList<Comic> comics) {
+        this.arrayList.addAll(comics);
+    }
+
+    @Override
+    public void resetData() {
+        this.arrayList.clear();
     }
 
     @Override
     public int getCount() {
-        return this.arrayListComic.size();
+        return this.arrayList.size();
     }
 
 
@@ -43,7 +51,7 @@ public class ComicListAdapter extends ListAdapter<Comic>
     {
         try
         {
-            return this.arrayListComic.get(index);
+            return this.arrayList.get(index);
         }
         catch(Exception e)
         {
@@ -74,14 +82,13 @@ public class ComicListAdapter extends ListAdapter<Comic>
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.title.setText(this.arrayListComic.get(position).getTitle());
+        viewHolder.title.setText(this.arrayList.get(position).getTitle());
 
-        if(this.arrayListComic.get(position).getThumbnail() != null)
+        if(this.arrayList.get(position).getThumbnail() != null)
         {
-            Logger.logSuccess("| "+this.arrayListComic.get(position).getThumbnail());
-            Picasso.with(context).load(this.arrayListComic.get(position).getThumbnail()).into(viewHolder.image);
+            Logger.logSuccess("| "+this.arrayList.get(position).getThumbnail());
+            Picasso.with(context).load(this.arrayList.get(position).getThumbnail()).into(viewHolder.image);
             //Broker.getDefaultImageCache(0).loadBitmap(context, this.arrayListComic.get(position).getThumbnail() , viewHolder.image);
-
         }
 
         return convertView;

@@ -2,12 +2,16 @@ package com.marvels.app.mvandroid.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ListView;
 
 import com.marvels.app.mvandroid.R;
+import com.marvels.app.mvandroid.core.resultset.ComicResultSet;
+import com.marvels.app.mvandroid.view.adapter.ComicListAdapter;
 
 public class MainActivity extends AppCompatActivity implements MainActivityPresenter.View {
 
     private MainActivityPresenter activityPresenter;
+    private ComicListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +19,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
         setContentView(R.layout.activity_main);
 
+        ListView listView = findViewById(R.id.list_view);
+
         activityPresenter = new MainActivityPresenter(this);
+
+        this.listAdapter = new ComicListAdapter(this);
+        listView.setAdapter(listAdapter);
     }
 
     @Override
@@ -24,8 +33,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     }
 
     @Override
-    public void updateListAdapter() {
+    public void updateListAdapter(final ComicResultSet resultSet) {
+//        runOnUiThread(()->{
 
+//        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                listAdapter.setData(resultSet.getParsedData());
+                listAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
